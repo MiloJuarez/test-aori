@@ -54,7 +54,15 @@ class UserController extends Controller
      */
     public function show(int $id)
     {
-        //
+        $user = User::find($id);
+
+        if ($user) {
+            return new UserResource($user);
+        }
+
+        return response()->json([
+            'message' => 'Usuario no encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
