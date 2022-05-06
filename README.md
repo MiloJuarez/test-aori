@@ -51,9 +51,13 @@ $ php artisan key:generate
 npm run dev
 ```
 
-Setup your database credentials in the .env file and then start the server
+Setup your database credentials in the .env file and then run the following in your command line:
 
 ```bash
+# Run the migration
+$ php artisan migrate
+
+# Start the server
 $ php artisan serve
 ```
 
