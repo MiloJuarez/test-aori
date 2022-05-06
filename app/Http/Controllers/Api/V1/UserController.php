@@ -33,7 +33,7 @@ class UserController extends Controller
 
         if ($validateRequest->fails()) {
             return response()->json([
-                'message' => 'The given data was invalid.',
+                'message' => 'Los datos no son válidos',
                 'errors' => $validateRequest->errors(),
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
