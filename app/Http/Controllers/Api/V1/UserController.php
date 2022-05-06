@@ -66,7 +66,29 @@ class UserController extends Controller
      */
     public function update(Request $request, int $id)
     {
-        //
+        $validateRequest = $this->validateRequest($request);
+
+        if ($validateRequest->fails()) {
+            return response()->json([
+                'message' => 'Los datos no son válidos',
+                'errors' => $validateRequest->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user = User::find($id);
+
+        if ($user) {
+            $user->update($request->all());
+
+            return response()->json([
+                'message' => 'Usuario actualizado correctamente',
+                'data' => new UserResource($user),
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'message' => 'Usuario no encontrado',
+        ], Response::HTTP_NOT_FOUND);
     }
 
     /**
@@ -102,6 +124,9 @@ class UserController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'edad' => 'required|integer|min:18|max:100',
+        ], [
+            'edad.min' => 'La edad mínima es 18',
+            'edad.max' => 'La edad máxima es 100',
         ]);
 
         return $validator;
