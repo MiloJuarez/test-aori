@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -26,7 +29,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateRequest = $this->validateRequest($request);
+
+        if ($validateRequest->fails()) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => $validateRequest->errors(),
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $user = User::create($request->all());
+
+        return response()->json([
+            'message' => 'Usuario registrado correctamente',
+            'data' => new UserResource($user),
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -61,5 +78,22 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+
+    /**
+     * Validate the request data
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Illuminate\Support\Facades\Validator
+     */
+    public function validateRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'edad' => 'required|integer|min:18|max:100',
+        ]);
+
+        return $validator;
     }
 }
