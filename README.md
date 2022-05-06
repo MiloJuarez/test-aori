@@ -46,9 +46,6 @@ $ cp .env.example .env
 
 # Generate a new app key
 $ php artisan key:generate
-
-# Run the app
-npm run dev
 ```
 
 Setup your database credentials in the .env file and then run the following in your command line:
