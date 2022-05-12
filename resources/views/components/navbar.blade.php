@@ -13,9 +13,19 @@
                 </li>
             </ul>
             @if (!isset($hideSF))
-                <form class="d-flex my-2 my-lg-0">
-                    <input class="form-control me-sm-2" type="text" placeholder="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <form class="my-2 my-lg-0">
+                    <div class="d-flex">
+                        <input class="form-control me-sm-2" type="text" placeholder="Search" name="search"
+                            value="{{ $search }}">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                    <div class="mt-2">
+                        @if (count($errors) > 0)
+                            @foreach ($errors as $error)
+                                <p class="text-danger mb-1"> {{ $error }}</p>
+                            @endforeach
+                        @endif
+                    </div>
                 </form>
             @endif
         </div>

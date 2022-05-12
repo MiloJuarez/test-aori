@@ -5,7 +5,7 @@ namespace App\Http\Controllers\View;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -14,10 +14,29 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('pages.user.index', compact('users'));
+        $users = collect([]);
+        $errors = collect([]);
+        $search = '';
+        if ($request->has('search') && empty($request->search) == false) {
+            $validator = Validator::make(
+                $request->all(),
+                ['search' => 'string|max:50'],
+                [
+                    'search.max' => 'The search value must not be greater than :max characters'
+                ]
+            );
+            if ($validator->fails()) {
+                $errors = $validator->errors()->all();
+            } else {
+                $search = $request->search;
+                $users = User::where('nombre', 'like', "%{$search}%")->orWhere('apellido', 'like', "%{$search}%")->get();
+            }
+        } else {
+            $users = User::all();
+        }
+        return view('pages.user.index', compact('users', 'errors', 'search'));
     }
 
     /**
@@ -30,27 +49,6 @@ class UserController extends Controller
         return view('pages.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -62,28 +60,5 @@ class UserController extends Controller
     {
         $hideSF = true;
         return view('pages.user.edit', compact('user', 'hideSF'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
     }
 }

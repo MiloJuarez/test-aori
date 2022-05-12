@@ -6,7 +6,7 @@
         </div>
         <div class="container-md">
             <table class="table table-striped table-inverse table-responsive text-white">
-                <thead class="thead-default">
+                <thead class="thead-inverse">
                     <tr>
                         <th>#</th>
                         <th>Name</th>
@@ -19,7 +19,7 @@
                     @php
                         $count = 1;
                     @endphp
-                    @forelse ($users as $user)
+                    @foreach ($users as $user)
                         <tr class="text-white bg-secondary">
                             <td scope="row">{{ $count }}</td>
                             <td>{{ $user->nombre }}</td>
@@ -37,15 +37,14 @@
                         @php
                             $count++;
                         @endphp
-                    @empty
-                        <div class="card" style="background-color:green; border-color:gray;">
-                            <div class="card-body">
-                                <h4 class="card-title fs-italic fw-light">No users found.</h4>
-                            </div>
-                        </div>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
+            @if (count($users) == 0)
+                <div class="d-flex justify-content-center">
+                    <h4 class="fs-4 fst-italic fw-light text-white">No users found.</h4>
+                </div>
+            @endif
         </div>
     </div>
     @include('components.confirmDelete')
