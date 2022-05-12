@@ -1,5 +1,5 @@
 <div>
-    @if ($user)
+    @if (isset($user))
         <input type="hidden" name="identifier" value="{{ $user->id }}">
     @endif
     @csrf
@@ -11,13 +11,13 @@
 
     <div class="mb-3">
         <label for="lastname" class="form-label">Name</label>
-        <input type="text" name="lastname" id="lastname" class="form-control" placeholder="User name"
+        <input type="text" name="lastname" id="lastname" class="form-control" placeholder="User lastname"
             value="{{ $user->apellido ?? '' }}">
     </div>
 
     <div class="mb-3">
         <label for="age" class="form-label">Name</label>
-        <input type="number" name="age" id="age" class="form-control" placeholder="User name"
+        <input type="number" name="age" id="age" class="form-control" placeholder="User age"
             value="{{ $user->edad ?? '' }}">
     </div>
 </div>

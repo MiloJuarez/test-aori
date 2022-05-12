@@ -58,7 +58,7 @@ function getErrorsMessages(response) {
 
 function getSimpleErrorMessage() {
     let htmlSimpleError = `
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             <strong>Woops!</strong> There are empty fields
         </div>
@@ -69,6 +69,7 @@ function getSimpleErrorMessage() {
 
 $("#btnEdit").click(function (e) {
     e.preventDefault();
+    $("#errors").html("");
     if (validateEmptyForm() > 0) {
         $("#errors").html(getSimpleErrorMessage());
         return;
@@ -100,7 +101,41 @@ $("#btnEdit").click(function (e) {
             if (response.status == 422) {
                 $("#errors").html(getErrorsMessages(response));
             }
-            console.log(response);
+        },
+    });
+});
+
+$("#btnRegister").click(function (e) {
+    e.preventDefault();
+    $("#errors").html("");
+    if (validateEmptyForm() > 0) {
+        $("#errors").html(getSimpleErrorMessage());
+        return;
+    }
+
+    let headers = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "multipart/form-data",
+        },
+    };
+
+    let data = getFormData();
+
+    $.ajax({
+        url: "/api/v1/users/new",
+        method: "POST",
+        headers: headers,
+        data: data,
+        dataType: "json",
+        success: function (response) {
+            $("#errors").html(getSuccessMessage(response.message));
+            setTimeout(() => {
+                window.location = "/";
+            }, 3000);
+        },
+        error: function (response) {
+            $("#errors").html(getErrorsMessages(response));
         },
     });
 });
