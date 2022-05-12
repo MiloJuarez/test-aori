@@ -5,6 +5,7 @@ namespace App\Http\Controllers\View;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {
@@ -59,7 +60,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $hideSF = true;
+        return view('pages.user.edit', compact('user', 'hideSF'));
     }
 
     /**

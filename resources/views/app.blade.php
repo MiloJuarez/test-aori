@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Laravel</title>
 
@@ -22,6 +23,7 @@
 
     {{-- Scripts --}}
     <script src="{{ asset('/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('/js/jQuery3.6.0.js') }}"></script>
 </head>
 
 <body class=" container-fluid bg-dark m-0 p-0">
@@ -34,6 +36,9 @@
     <footer>
         @include('components.footer')
     </footer>
+    <div>
+        @yield('scripts')
+    </div>
 </body>
 
 </html>
