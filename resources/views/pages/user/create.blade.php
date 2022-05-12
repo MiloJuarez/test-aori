@@ -15,5 +15,5 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('/js/scripts.js') }}"></script>
+    <script src="{{ asset('/js/scripts.js') }}" type="module"></script>
 @endsection

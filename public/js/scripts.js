@@ -1,3 +1,6 @@
+import ResponseMessages from "./messages.js";
+import HTTPHeaders from "./headers.js";
+
 function validateEmptyForm() {
     let emptyInputs = 0;
 
@@ -26,61 +29,15 @@ function getFormData() {
     return formData;
 }
 
-function getSuccessMessage(message) {
-    let htmlMessage = `
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <strong>Success!</strong> ${message}
-        </div>
-    `;
-
-    return htmlMessage;
-}
-
-function getErrorsMessages(response) {
-    let htmlErrors,
-        errors = "";
-    $(response.responseJSON.errors).each((error) => {
-        $(error).each((errorChild) => {
-            errors += `<li>${errorChild}</li>`;
-        });
-    });
-
-    htmlErrors = `
-        <div class="alert alert-danger" role="alert">
-            <strong>Woops! ${response.responseJSON.message}</strong>
-            <ul>${errors}</ul>
-        </div>
-    `;
-
-    return htmlErrors;
-}
-
-function getSimpleErrorMessage() {
-    let htmlSimpleError = `
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            <strong>Woops!</strong> There are empty fields
-        </div>
-    `;
-
-    return htmlSimpleError;
-}
-
 $("#btnEdit").click(function (e) {
     e.preventDefault();
     $("#errors").html("");
     if (validateEmptyForm() > 0) {
-        $("#errors").html(getSimpleErrorMessage());
+        $("#errors").html(
+            ResponseMessages.getSimpleErrorMessage("There are empty inputs")
+        );
         return;
     }
-
-    let headers = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-    };
 
     const data = getFormData();
     const userIdentifier = $("input[name='identifier']").val();
@@ -88,18 +45,20 @@ $("#btnEdit").click(function (e) {
     $.ajax({
         url: "/api/v1/users/update/" + userIdentifier,
         method: "PUT",
-        headers: headers,
+        headers: HTTPHeaders.putHeaders(),
         data: data,
         dataType: "json",
         success: function (response) {
-            $("#errors").html(getSuccessMessage(response.message));
+            $("#errors").html(
+                ResponseMessages.getSuccessMessage(response.message)
+            );
             setTimeout(() => {
                 window.location = "/";
-            }, 3000);
+            }, 2000);
         },
         error: function (response) {
             if (response.status == 422) {
-                $("#errors").html(getErrorsMessages(response));
+                $("#errors").html(ResponseMessages.getErrorsMessages(response));
             }
         },
     });
@@ -113,29 +72,24 @@ $("#btnRegister").click(function (e) {
         return;
     }
 
-    let headers = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "multipart/form-data",
-        },
-    };
-
     let data = getFormData();
 
     $.ajax({
         url: "/api/v1/users/new",
         method: "POST",
-        headers: headers,
+        headers: HTTPHeaders.postHeaders(),
         data: data,
         dataType: "json",
         success: function (response) {
-            $("#errors").html(getSuccessMessage(response.message));
+            $("#errors").html(
+                ResponseMessages.getSuccessMessage(response.message)
+            );
             setTimeout(() => {
                 window.location = "/";
-            }, 3000);
+            }, 2000);
         },
         error: function (response) {
-            $("#errors").html(getErrorsMessages(response));
+            $("#errors").html(ResponseMessages.getErrorsMessages(response));
         },
     });
 });
