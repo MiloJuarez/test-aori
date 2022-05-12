@@ -28,8 +28,10 @@
                             <td>
                                 <a href="{{ route('users.edit', $user) }}" class="btn btn-secondary bg-dark"
                                     title="Edit user">Edit</a>
-                                <button type="button" class="btn btn-danger" id="btnDelete" title="Delete user"
-                                    data-identifier="{{ $user->id }}">Delete</button>
+                                <button type="button" class="btn btn-danger btnDelete" title="Delete user"
+                                    data-bs-toggle="modal" data-bs-target="#modelId" data-identifier="{{ $user->id }}">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                         @php
@@ -46,4 +48,8 @@
             </table>
         </div>
     </div>
+    @include('components.confirmDelete')
+@endsection
+@section('scripts')
+    <script src="{{ asset('/js/index.js') }}" type="module"></script>
 @endsection
