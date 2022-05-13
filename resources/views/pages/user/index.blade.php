@@ -5,7 +5,7 @@
             <a href="{{ route('users.create') }}" class="btn btn-success">Register</a>
         </div>
         <div class="container-md">
-            <table class="table table-striped table-inverse table-responsive text-white">
+            <table class="table table-hover table-inverse table-responsive text-white">
                 <thead class="thead-inverse">
                     <tr>
                         <th>#</th>

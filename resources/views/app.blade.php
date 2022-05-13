@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('/css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/bootstrap.css') }}">
     <style>
@@ -30,7 +31,7 @@
     <header class="p-5">
         @include('components.navbar')
     </header>
-    <div class="container-md p-5">
+    <div class="container-md p-5 pages-container shadow p-3 mb-5 rounded bg-dark bg-gradient">
         @yield('content')
     </div>
     <footer>
