@@ -46,7 +46,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.user.create');
+        $hideSF = true;
+        return view('pages.user.create', compact('hideSF'));
     }
 
 
