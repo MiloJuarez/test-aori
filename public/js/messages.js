@@ -22,13 +22,15 @@ class ResponseMessages {
     }
 
     static getErrorsMessages(response) {
-        let htmlErrors,
-            errors = "";
-        $(response.responseJSON.errors).each((error) => {
-            $(error).each((errorChild) => {
-                errors += `<li>${errorChild}</li>`;
-            });
-        });
+        let htmlErrors = "";
+        let errors = "";
+        const object = response.responseJSON.errors;
+
+        for (const key in object) {
+            if (Object.hasOwnProperty.call(object, key)) {
+                errors += `<li>${object[key]}</li>`;
+            }
+        }
 
         htmlErrors = `
             <div class="alert alert-danger" role="alert">

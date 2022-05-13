@@ -1,24 +1,6 @@
 import ResponseMessages from "./messages.js";
 import HTTPHeaders from "./headers.js";
 
-function validateEmptyForm() {
-    let emptyInputs = 0;
-
-    if ($("input[name='name']").val() === "") {
-        emptyInputs++;
-    }
-
-    if ($("input[name='lastname']").val() === "") {
-        emptyInputs++;
-    }
-
-    if ($("input[name='age']").val() === "") {
-        emptyInputs++;
-    }
-
-    return emptyInputs;
-}
-
 function getFormData() {
     let formData = {
         nombre: $("input[name='name']").val(),
@@ -32,12 +14,6 @@ function getFormData() {
 $("#btnEdit").click(function (e) {
     e.preventDefault();
     $("#errors").html("");
-    if (validateEmptyForm() > 0) {
-        $("#errors").html(
-            ResponseMessages.getSimpleErrorMessage("There are empty inputs")
-        );
-        return;
-    }
 
     const data = getFormData();
     const userIdentifier = $("input[name='identifier']").val();
@@ -67,10 +43,6 @@ $("#btnEdit").click(function (e) {
 $("#btnRegister").click(function (e) {
     e.preventDefault();
     $("#errors").html("");
-    if (validateEmptyForm() > 0) {
-        $("#errors").html(getSimpleErrorMessage());
-        return;
-    }
 
     let data = getFormData();
 
